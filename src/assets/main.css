@@ -1,0 +1,9 @@
+
+form{
+    padding: 20px;
+    margin-top:60px;
+}
+
+.input-field label{
+    white-space: nowrap !important;   
+}
