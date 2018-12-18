@@ -1,10 +1,21 @@
-import React from 'react'
+import React from 'react';
+import { Card,Collection,CollectionItem } from 'react-materialize';
 
-const Notifications = () => {
+const Notifications = (props) => {
   return (
-    <div>
-      <h3>Notifications</h3>
-    </div>
+    
+    <Card 
+      textClassName='grey-text text-darken-3'
+      title="notifications"
+    >
+      <Collection>
+        <CollectionItem href='#'>Alvin</CollectionItem>
+        <CollectionItem href='#' active>Alvin</CollectionItem>
+        <CollectionItem href='#'>Alvin</CollectionItem>
+        <CollectionItem href='#'>Alvin</CollectionItem>
+      </Collection>
+    </Card>
+
   )
 }
 
