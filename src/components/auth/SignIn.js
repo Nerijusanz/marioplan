@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import Validator from 'validator'
 import { Row,Input,Button } from 'react-materialize'
+
+import { signIn } from '../../redux/actions/authActions';
 
 class SignIn extends Component {
 
@@ -28,10 +31,8 @@ class SignIn extends Component {
         
         if(!this.dataValidation(this.state.data)) return; // if validation got error stop login process
         
-        // validation OK;
-        console.log('make login to server');
-        console.log(this.state.data);
-        //this.props.login(this.state.data);
+        
+        this.props.signIn(this.state.data);
 
     }
 
@@ -57,18 +58,28 @@ class SignIn extends Component {
     }
 
   render() {
+
+    const { validationErrors,data:{email,password} } = this.state;
+    const { authError} = this.props.auth; //authReducer
+
+    const error = (authError) && <div className="red-text text-darken-3">{authError}</div>
+
     return (
         <div className="container">
+
             <form onSubmit={this.onSubmit} >
+
+                {error}
+
                 <Row>
                     <Input
                         name="email"
                         s={12}
                         label="email"
                         placeholder="email"
-                        error = {(this.state.validationErrors.email)?this.state.validationErrors.email:''}
+                        error = {(validationErrors.email)?validationErrors.email:null}
                         onChange={this.onChange}
-                        value={this.state.data.email}
+                        value={email}
                         />
                     <Input
                         name="password"
@@ -76,9 +87,9 @@ class SignIn extends Component {
                         s={12}
                         label="password"
                         placeholder="password"
-                        error = {(this.state.validationErrors.password)?this.state.validationErrors.password:''}
+                        error = {(validationErrors.password)?validationErrors.password:null}
                         onChange={this.onChange}
-                        value={this.state.data.password}
+                        value={password}
                         />
 
                     <Button className="pink">Login</Button>
@@ -90,4 +101,10 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn;
+const mapStateToProps = (state) => {
+    return{
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps,{signIn})(SignIn);

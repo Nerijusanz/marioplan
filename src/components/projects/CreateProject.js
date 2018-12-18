@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import Validator from 'validator'
-import { Row,Input,Button } from 'react-materialize'
+import { connect } from 'react-redux';
+import { Row,Input,Button } from 'react-materialize';
+
+import {createProject} from '../../redux/actions/projectsAction';
 
 class CreateProject extends Component {
 
@@ -27,12 +29,9 @@ class CreateProject extends Component {
         e.preventDefault();
         
         if(!this.dataValidation(this.state.data)) return; // if validation got error stop login process
-        
-        // validation OK;
-        console.log('make request to server');
-        console.log(this.state.data);
-        //this.props.login(this.state.data);
-
+        // TODO: async await createProject()
+        this.props.createProject(this.state.data);
+        this.props.history.push('/dashboard');
     }
 
     dataValidation = (data) =>{
@@ -90,4 +89,4 @@ class CreateProject extends Component {
   }
 }
 
-export default CreateProject;
+export default connect(null,{createProject})(CreateProject);

@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Validator from 'validator'
 import { Row,Input,Button } from 'react-materialize'
+
+import { signUp } from '../../redux/actions/authActions';
 
 class SignUp extends Component {
 
@@ -31,10 +34,7 @@ class SignUp extends Component {
         
         if(!this.dataValidation(this.state.data)) return; // if validation got error stop login process
         
-        // validation OK;
-        console.log('make signup to server');
-        console.log(this.state.data);
-        //this.props.login(this.state.data);
+        this.props.signUp(this.state.data);
 
     }
 
@@ -47,10 +47,10 @@ class SignUp extends Component {
         if(!data.firstname) validationErrors.firstname = 'first name is required';
         if(!data.lastname) validationErrors.lastname = 'last name is required';
         if(!Validator.isEmail(data.email)) validationErrors.email = 'invalid email';    //npm i validator
-        // if(!data.password) validationErrors.password = 'password is required';
 
-        if(data.password.length < 5) validationErrors.password = "password must consist min 5 simbols";
-        if(data.passwordConf.length < 5) validationErrors.passwordConf = "password must consist min 5 simbols";
+        const minSimbolsNum = 6;
+        if( data.password.length < minSimbolsNum ) validationErrors.password = `password must consist min ${minSimbolsNum} simbols`;
+        if( data.passwordConf.length < minSimbolsNum ) validationErrors.passwordConf = `password must consist min ${minSimbolsNum} simbols`;
 
         if(!Validator.equals(data.password,data.passwordConf)) validationErrors.passwordConf = 'pasword isn`t match';
 
@@ -67,11 +67,19 @@ class SignUp extends Component {
     }
 
   render() {
+
+    const { authError} = this.props.auth; //authReducer
+
+    const error = (authError) && <div className="red-text text-darken-3">{authError}</div>
+
+
     return (
         <div className="container">
             <form onSubmit={this.onSubmit} >
+
+                {error}
+
                 <Row>
-                    
                     <Input
                         name="firstname"
                         type="text"
@@ -132,4 +140,10 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps,{signUp})(SignUp);

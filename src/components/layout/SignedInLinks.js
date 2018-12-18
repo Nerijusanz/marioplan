@@ -1,18 +1,22 @@
-import React, {Fragment} from 'react'
-// import { Link} from 'react-router-dom'
+import React, {Fragment} from 'react';
+import { connect } from 'react-redux';
 import { NavItem,Button } from 'react-materialize'
 
+import { signOut } from '../../redux/actions/authActions';
 
 
-const SignedInLinks = () => {
-  return (
-    <Fragment>
+const SignedInLinks = (props) => {
+
+  const { profile:{initials} } = props;
+
+return (
+  <Fragment>
       <NavItem href="/projects/add">New Project</NavItem>
-      <NavItem href="/logout">Logout</NavItem>
-      <NavItem href="/"><Button floating className="pink">NN</Button></NavItem>
+      <NavItem href="/logout" onClick={props.signOut}>Logout</NavItem>
+      <NavItem href="/"><Button floating className="pink">{initials}</Button></NavItem>
     </Fragment>
   )
 }
 
-export default SignedInLinks;
+export default connect(null,{signOut})(SignedInLinks);
 
