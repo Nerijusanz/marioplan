@@ -2,11 +2,13 @@
 
 # dependencies
 /node_modules
+/dist
 #package
 package-lock.json
 
 /functions/node_modules
 /functions/package-lock.json
+.firebase/
 
 /.pnp
 .pnp.js

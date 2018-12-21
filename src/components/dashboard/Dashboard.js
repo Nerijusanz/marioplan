@@ -15,9 +15,12 @@ class Dashboard extends Component {
 
   render() {
 
-    const projects = this.props.Firestore.ordered.projects;
+    //---------------------------------------------------------------
+    const { ordered:{projects,notifications} } = this.props.Firestore;  //Firestore Reducer
+    //----------------------------------------------------------------
 
     const projectsList = (projects)? projects : [];
+    const notificationsList = (notifications)? notifications : [];
    
     return (
       <div className="dashboard">
@@ -27,7 +30,7 @@ class Dashboard extends Component {
               <ProjectsList projects={projectsList} />
             </Col>
             <Col s={12} m={5} className="offset-m1">
-                <Notifications />
+                <Notifications notifications={notificationsList} />
             </Col>
         </Row>
       </div>
@@ -51,6 +54,7 @@ const mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps,{}),
   firestoreConnect([
-    {collection:"projects"}
+    {collection:'projects',orderBy:['createdAt','desc']},
+    {collection:'notifications',limit:3,orderBy:['time','desc']}
   ])
 )(Dashboard)
