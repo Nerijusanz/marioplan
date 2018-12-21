@@ -1,1 +1,3 @@
-## Mario paln project React&Redux + Firebase
+## Mario plan project 
+
+## React + Redux + Firebase
